@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Check, Sparkles, Zap, Users, Shield, ArrowRight, Star, ChevronRight } from 'lucide-react'
+import { X, Check, Sparkles, Zap, Users, Shield, ArrowRight, Star, ChevronRight, CreditCard } from 'lucide-react'
+import { PayPalButton } from './paypal-button'
 import { Button } from './button'
 import { Badge } from './badge'
 import { cn } from '@/lib/utils'
@@ -220,6 +221,14 @@ export function UpgradeModal() {
                           </div>
                         ))}
                       </div>
+
+                      {/* PayPal button */}
+                      {(planId === 'starter' || planId === 'growth' || planId === 'scale') && !isCurrent && (
+                        <div className="mt-3 pt-3 border-t border-glass-border">
+                          <div className="text-[10px] text-foreground-muted/30 mb-2 text-center">Or pay directly with PayPal</div>
+                          <PayPalButton amount={price} planName={plan.name} billingCycle={billingCycle} />
+                        </div>
+                      )}
 
                       {/* More features indicator */}
                       {plan.features.length > 7 && (

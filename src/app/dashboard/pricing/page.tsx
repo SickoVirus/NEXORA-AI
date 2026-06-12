@@ -7,7 +7,8 @@ import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 import { useSubscription } from '@/lib/subscription-context'
 import { PLANS, type BillingCycle, type PlanTier, type Plan } from '@/lib/plans'
-import { Check, Sparkles, Zap, Users, Shield, Star, ArrowRight, HelpCircle, X } from 'lucide-react'
+import { Check, Sparkles, Zap, Users, Shield, Star, ArrowRight, HelpCircle, X, CreditCard } from 'lucide-react'
+import { PayPalButton } from '@/components/ui/paypal-button'
 
 const FAQS = [
   { q: 'Can I switch plans at any time?', a: 'Yes, you can upgrade or downgrade your plan at any time. Changes take effect immediately. When downgrading, the new limits apply at the start of your next billing cycle.' },
@@ -174,16 +175,39 @@ export default function PricingPage() {
               </div>
 
               {/* CTA */}
-              <Button
-                variant={isCurrent ? 'glass' : plan.popular ? 'gradient' : 'outline'}
-                size="default"
-                className="w-full mb-5"
-                onClick={() => isCurrent ? null : openUpgrade(plan.id)}
-                disabled={isCurrent}
-              >
-                {isCurrent ? 'Current Plan' : plan.cta}
-                {!isCurrent && <ArrowRight className="w-4 h-4 ml-1.5" />}
-              </Button>
+              {(plan.id === 'starter' || plan.id === 'growth' || plan.id === 'scale') && !isCurrent ? (
+                <div className="mb-5 space-y-2">
+                  <Button
+                    variant="gradient"
+                    size="default"
+                    className="w-full"
+                    onClick={() => openUpgrade(plan.id)}
+                  >
+                    {plan.id === 'starter' ? 'Start Free Trial' : 'Start Free Trial'}
+                    <ArrowRight className="w-4 h-4 ml-1.5" />
+                  </Button>
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <div className="w-full border-t border-glass-border" />
+                    </div>
+                    <div className="relative flex justify-center text-[10px]">
+                      <span className="px-2 bg-[#080c1a] text-foreground-muted/40">or pay directly</span>
+                    </div>
+                  </div>
+                  <PayPalButton amount={selectedCycle === 'monthly' ? plan.monthlyPrice : Math.round(plan.annualPrice / 12)} planName={plan.name} billingCycle={selectedCycle} />
+                </div>
+              ) : (
+                <Button
+                  variant={isCurrent ? 'glass' : plan.popular ? 'gradient' : 'outline'}
+                  size="default"
+                  className="w-full mb-5"
+                  onClick={() => isCurrent ? null : openUpgrade(plan.id)}
+                  disabled={isCurrent}
+                >
+                  {isCurrent ? 'Current Plan' : plan.cta}
+                  {!isCurrent && <ArrowRight className="w-4 h-4 ml-1.5" />}
+                </Button>
+              )}
 
               {/* Features */}
               <div className="flex-1 space-y-3">

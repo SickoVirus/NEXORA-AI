@@ -7,7 +7,8 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { UpgradeModal } from '@/components/ui/upgrade-modal'
-import { Settings, User, Shield, Bell, CreditCard, Link, Users, Palette, Sparkles, ChevronRight, Check, Brain, Zap, Shield as ShieldIcon, Target, Lightbulb, FileText, BarChart3, Database, Globe, Mail, Phone, MapPin, Key, Clock, Download, ArrowRight, Plus, X, Copy, ExternalLink, Lock, Star, Gift, RefreshCw, AlertCircle, Unlock, Camera } from 'lucide-react'
+import { Settings, User, Shield, Bell, CreditCard, Link, Users, Palette, Sparkles, ChevronRight, Check, Brain, Zap, Shield as ShieldIcon, Target, Lightbulb, FileText, BarChart3, Database, Globe, Mail, Phone, MapPin, Key, Clock, Download, ArrowRight, Plus, X, Copy, ExternalLink, Lock, Star, Gift, RefreshCw, AlertCircle, Unlock, Camera, Wallet } from 'lucide-react'
+import { PayPalButton } from '@/components/ui/paypal-button'
 import { cn } from '@/lib/utils'
 import { type AITone, getDefaultTone } from '@/lib/ai-engine'
 import { useSubscription } from '@/lib/subscription-context'
@@ -363,17 +364,20 @@ export default function SettingsPage() {
                 {/* Payment Method */}
                 <div className="glass-card rounded-xl p-5 border">
                   <h3 className="text-sm font-semibold mb-4">Payment Method</h3>
-                  <div className="flex items-center justify-between rounded-xl bg-white/[0.02] border border-glass-border p-3.5">
+                  <div className="rounded-xl bg-white/[0.02] border border-glass-border p-4 space-y-3">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-7 rounded bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-[8px] font-bold text-white">VISA</div>
-                      <div>
-                        <div className="text-sm font-medium">Visa ending in 4242</div>
-                        <div className="text-[10px] text-foreground-muted/40">Expires 12/2026</div>
+                      <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
+                        <Wallet className="w-5 h-5 text-blue-400" />
                       </div>
+                      <div className="flex-1">
+                        <div className="text-sm font-medium">PayPal</div>
+                        <div className="text-[10px] text-foreground-muted/40">Pay securely with your PayPal account</div>
+                      </div>
+                      <Badge variant="accent" size="sm">Connected</Badge>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Button variant="ghost" size="sm" className="text-xs h-8">Update</Button>
-                      <Button variant="ghost" size="sm" className="text-xs h-8">Remove</Button>
+                    <div className="border-t border-glass-border pt-3">
+                      <p className="text-[10px] text-foreground-muted/40 mb-2">PayPal is your default payment method. Your subscription of <strong className="text-foreground/70">${PLANS[subscription.plan].monthlyPrice}/month</strong> will be billed through PayPal.</p>
+                      <PayPalButton amount={PLANS[subscription.plan].monthlyPrice} planName={PLANS[subscription.plan].name} />
                     </div>
                   </div>
                 </div>
